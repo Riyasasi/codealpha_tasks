@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #faf3e0;
+            
+        }
+
+        .calculator {
+            background: #333;
+            border-radius: 10px;
+            width: 320px;
+            padding: 15px;
+            color: white;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .display {
+            background: #222;
+            height: 60px;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: right;
+            font-size: 1.5rem;
+            color: #0f0;
+            overflow: hidden;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.basic {
+            background: #444;
+            color: white;
+        }
+
+        button.operator {
+            background: #777;
+            color: white;
+        }
+
+        button.equals {
+            background: #007BFF;
+            color: white;
+        }
+
+        button.function {
+            background: #555;
+            color: white;
+        }
+
+        button:hover {
+            background: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <!-- Row 1 -->
+            <button class="basic" onclick="clearDisplay()">C</button>
+            <button class="basic" onclick="deleteLast()">DEL</button>
+            <button class="operator" onclick="appendOperator('%')">%</button>
+            <button class="operator" onclick="appendOperator('/')">÷</button>
+            <button class="equals" onclick="calculate()">=</button>
+
+            <!-- Row 2 -->
+            <button class="basic" onclick="appendNumber(7)">7</button>
+            <button class="basic" onclick="appendNumber(8)">8</button>
+            <button class="basic" onclick="appendNumber(9)">9</button>
+            <button class="operator" onclick="appendOperator('*')">×</button>
+            <button class="function" onclick="calculateSqrt()">√</button>
+
+            <!-- Row 3 -->
+            <button class="basic" onclick="appendNumber(4)">4</button>
+            <button class="basic" onclick="appendNumber(5)">5</button>
+            <button class="basic" onclick="appendNumber(6)">6</button>
+            <button class="operator" onclick="appendOperator('-')">−</button>
+            <button class="function" onclick="calculateSin()">sin</button>
+
+            <!-- Row 4 -->
+            <button class="basic" onclick="appendNumber(1)">1</button>
+            <button class="basic" onclick="appendNumber(2)">2</button>
+            <button class="basic" onclick="appendNumber(3)">3</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+            <button class="function" onclick="calculateCos()">cos</button>
+
+            <!-- Row 5 -->
+            <button class="basic" onclick="appendNumber(0)">0</button>
+            <button class="basic" onclick="appendOperator('.')">.</button>
+            <button class="function" onclick="calculateTan()">tan</button>
+            <button class="function" onclick="calculateLog()">log</button>
+            <button class="function" onclick="calculateFactorial()">n!</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        // Append numbers to the display
+        function appendNumber(num) {
+            if (display.textContent === '0') {
+                display.textContent = '';
+            }
+            display.textContent += num;
+        }
+
+        // Append operators to the display
+        function appendOperator(op) {
+            display.textContent += ` ${op} `;
+        }
+
+        // Clear the display
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        // Delete the last character
+        function deleteLast() {
+            display.textContent = display.textContent.trim().slice(0, -1) || '0';
+        }
+
+        // Calculate the result of basic operations
+        function calculate() {
+            try {
+                display.textContent = eval(display.textContent.replace('÷', '/').replace('×', '*'));
+            } catch {
+                display.textContent = 'Error';
+            }
+        }
+
+        // Advanced Functionality
+        function calculateSqrt() {
+            const value = parseFloat(display.textContent);
+            display.textContent = Math.sqrt(value).toFixed(6);
+        }
+
+        function calculateSin() {
+            const value = parseFloat(display.textContent);
+            display.textContent = Math.sin((value * Math.PI) / 180).toFixed(6); // Convert to radians
+        }
+
+        function calculateCos() {
+            const value = parseFloat(display.textContent);
+            display.textContent = Math.cos((value * Math.PI) / 180).toFixed(6); // Convert to radians
+        }
+
+        function calculateTan() {
+            const value = parseFloat(display.textContent);
+            display.textContent = Math.tan((value * Math.PI) / 180).toFixed(6); // Convert to radians
+        }
+
+        function calculateLog() {
+            const value = parseFloat(display.textContent);
+            display.textContent = Math.log10(value).toFixed(6);
+        }
+
+        function calculateFactorial() {
+            let value = parseInt(display.textContent);
+            if (value < 0) {
+                display.textContent = 'Error';
+                return;
+            }
+            let result = 1;
+            for (let i = 1; i <= value; i++) {
+                result *= i;
+            }
+            display.textContent = result;
+        }
+    </script>
+</body>
+</html>
